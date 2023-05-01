@@ -1,0 +1,9 @@
+.login {
+  display: block;
+  width: 800px;
+  margin: 200px auto 0px;
+  padding: 30px;
+  border: 1px solid rgb(108, 165, 218);
+  align-items: center;
+  text-align: center;
+}
