@@ -22,7 +22,7 @@
 
     if( isset($_POST['delete']) === true) {
         UserLogic::delete($_POST['delete']);
-    }  
+    }
 
 
 ?>
@@ -56,7 +56,7 @@
                 <br>
                 <li><?php h(print($message['text']));?></li>
                 <li><?php print($message['datetime']);?></li>
-                <?php if($message['name'] == $_SESSION['name']): 
+                <?php if($message['user_id'] == $_SESSION['user_id']): 
                     /*
                 $message['name'] == $_SESSION['name']かつdelete_atが1の時には投稿を表示させないようにしたい
             */

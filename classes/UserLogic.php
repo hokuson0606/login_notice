@@ -22,7 +22,7 @@ class UserLogic
         try{
             $stmt = connect()->prepare($sql);
             $stmt->bindParam(1, $userData['username']);
-            $stmt->bindParam(2, ['email']);
+            $stmt->bindParam(2, $userData['email']);
             $stmt->bindParam(3, $password);
             $stmt->bindParam(4, $delete_at_user);
             $result = $stmt->execute();   
@@ -56,8 +56,9 @@ class UserLogic
             $sql = "SELECT * FROM users WHERE email = '$email' ";
             $stmt = connect()->query($sql);
             $stmt->execute();
-            foreach ($stmt as $name){
-                $_SESSION['name'] = $name['name'];
+            foreach ($stmt as $user){
+                $_SESSION['name'] = $user['name'];
+                $_SESSION['user_id'] = $user['user_id'];
                 //$_SESSION['name'] は送れてる
             }
             $result = true;
@@ -112,17 +113,19 @@ class UserLogic
             $date = date("Y-m-d H:i:s");
             $delete_at = "0";
             $_SESSION['0'] = $delete_at;
+            $user_id = h($_SESSION['user_id']);
             $email = h($_SESSION['email']);
             $name = h($_SESSION['name']);
             $text = h($_POST['text']);
-            $sql = "INSERT INTO tweets (id,email,name,text,datetime,delete_at) VALUE(NULL,?,?,?,?,?)";
+            $sql = "INSERT INTO tweets (post_id,user_id,email,name,text,datetime,delete_at) VALUE(NULL,?,?,?,?,?,?)";
             if (strlen($text) >= 1 && strlen($text) <= 200) {
             $stmt = connect()->prepare($sql);
-            $stmt->bindParam(1, $email);
-            $stmt->bindParam(2, $name);
-            $stmt->bindParam(3, $text);
-            $stmt->bindParam(4, $date);
-            $stmt->bindParam(5, $delete_at);
+            $stmt->bindParam(1, $user_id);
+            $stmt->bindParam(2, $email);
+            $stmt->bindParam(3, $name);
+            $stmt->bindParam(4, $text);
+            $stmt->bindParam(5, $date);
+            $stmt->bindParam(6, $delete_at);
             $stmt->execute();
             echo '投稿しました';
             header('Location: ../notice/notice.php');
@@ -139,13 +142,10 @@ class UserLogic
      * @param string $
      * @return bool $
      */
-    public static function delete(){ 
-            
-            $sql = "UPDATE tweets SET delete_at = :delete_at WHERE email = :email ";
-            $stmt = connect()->prepare($sql);
-            $stmt-> execute(array(':delete_at' => '1', ':email' => $_SESSION['email']));
-            
-        
+    public static function delete($id){ 
+        $sql = "UPDATE tweets SET delete_at = :delete_at WHERE post_id = :post_id ";
+        $stmt = connect()->prepare($sql);
+        $stmt-> execute(array(':delete_at' => 1, ':post_id' => $id));
     }
 }
 
