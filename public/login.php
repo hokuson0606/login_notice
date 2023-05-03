@@ -4,6 +4,7 @@ error_reporting(E_ALL);
 
 session_start();
 
+
 $err = $_SESSION;
 
 $_SESSION = array();
@@ -32,6 +33,7 @@ session_destroy();
             <p>
                 <label for="password">パスワード：</label>
                 <input type="password" name="password">
+                
                 <?php if(isset($err['password'])): ?>
                     <p><?php echo $err['password']; ?></p>
                 <?php endif; ?>

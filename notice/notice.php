@@ -5,6 +5,7 @@
     require_once '../classes/UserLogic.php';
     
     session_start();
+
     
     if($_SESSION['email'] ==''){
         header('Location: ../public/login.php');

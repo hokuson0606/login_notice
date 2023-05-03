@@ -14,16 +14,18 @@ class UserLogic
     public static function createUser($userData)
     {
         $result = false;
-        $sql = 'INSERT INTO users (name, email, password) VALUES (?,?,?)';
+        $sql = 'INSERT INTO users (name, email, password,delete_at_user) VALUES (?,?,?,?)';
 
         //ユーザーデータを配列に入れる
-        $arr = [];
-        $arr[] = $userData['username'];
-        $arr[] = $userData['email'];
-        $arr[] = password_hash($userData['password'],PASSWORD_DEFAULT);
+        $delete_at_user = "0";
+        $password = password_hash($userData['password'],PASSWORD_DEFAULT);
         try{
             $stmt = connect()->prepare($sql);
-            $result = $stmt->execute($arr);   
+            $stmt->bindParam(1, $userData['username']);
+            $stmt->bindParam(2, ['email']);
+            $stmt->bindParam(3, $password);
+            $stmt->bindParam(4, $delete_at_user);
+            $result = $stmt->execute();   
             return $result;           
         }catch(Exception $e){
             return $result;

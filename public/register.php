@@ -35,7 +35,6 @@ $password = filter_input(INPUT_POST, 'password');
     $hasCreated = UserLogic::createUser($_POST);
 
     if(!$hasCreated){
-        var_dump($err);
         $err[] = '登録に失敗しました';
     }
  }
