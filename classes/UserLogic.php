@@ -137,15 +137,15 @@ class UserLogic
     }
 
     /**
-     *削除機能
-     * @param string $
-     * @param string $
-     * @return bool $
+     *論理削除機能
+     * @param string $post_id
      */
-    public static function delete($id){ 
-        $sql = "UPDATE tweets SET delete_at = :delete_at WHERE post_id = :post_id ";
-        $stmt = connect()->prepare($sql);
-        $stmt-> execute(array(':delete_at' => 1, ':post_id' => $id));
+    public static function delete($post_id){ 
+            $sql = "UPDATE tweets SET delete_at = :delete_at WHERE post_id = :post_id ";
+            $stmt = connect()->prepare($sql);
+            $stmt-> execute(array(':delete_at' => 1, ':post_id' => $post_id));
+            header('Location: ../notice/notice.php');
+            exit();
     }
 }
 

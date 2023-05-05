@@ -21,7 +21,8 @@
     }    
 
     if( isset($_POST['delete']) === true) {
-        UserLogic::delete($_POST['delete']);
+        $post_id = $_POST['delete'];
+        UserLogic::delete($post_id);
     }
 
 
@@ -48,22 +49,19 @@
     </form>
     <h2>表示欄</h2>
         <?php
-            $sql = 'SELECT * FROM tweets '; 
+            $sql = 'SELECT * FROM tweets WHERE delete_at = 0'; 
             $stmt = connect()->query($sql);
-            foreach($stmt as $message):?>
+            foreach($stmt as $post_data):?>
             <ul>
-                <li><?php h(print($message['name']));?></li>
+                <li><?php h(print($post_data['name']));?></li>
                 <br>
-                <li><?php h(print($message['text']));?></li>
-                <li><?php print($message['datetime']);?></li>
-                <?php if($message['user_id'] == $_SESSION['user_id']): 
-                    /*
-                $message['name'] == $_SESSION['name']かつdelete_atが1の時には投稿を表示させないようにしたい
-            */
-                    ?>
-                <form action="notice.php" method="post">
-                    <input value="削除" type="submit" name="delete" href="notice.php?id=<?php echo htmlspecialchars($message['email'], ENT_QUOTES); ?>">
-                </form>
+                <li><?php h(print($post_data['text']));?></li>
+                <li><?php print($post_data['datetime']);?></li>
+                <?php if($post_data['user_id'] == $_SESSION['user_id']):?>   
+                    <form action="notice.php" method="post">
+                        <input value="<?php echo $post_data['post_id']; ?>" type="hidden" name="delete">
+                        <input value="削除" type="submit"  >
+                    </form>
                 <?php endif; ?>
             </ul>
             <?php endforeach; ?>
