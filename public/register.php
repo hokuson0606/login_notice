@@ -31,6 +31,9 @@ $password = filter_input(INPUT_POST, 'password');
     $err[] = '確認用パスワードと異なっています。';
  }
 
+ UserLogic::mail_duplication($email);
+
+
  if(count($err)=== 0){
     $hasCreated = UserLogic::createUser($_POST);
 

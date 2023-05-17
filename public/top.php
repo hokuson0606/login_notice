@@ -16,11 +16,6 @@ if(!$password = filter_input(INPUT_POST, 'password')){
     $err['password'] = 'パスワードを記入してください';
 }
 
- if(count($err) > 0){
-    $_SESSION = $err;
-    header('Location: login.php');
-    return;
- }
 
 $result = UserLogic::login($email,$password);
 

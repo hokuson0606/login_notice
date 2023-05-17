@@ -147,6 +147,20 @@ class UserLogic
             header('Location: ../notice/notice.php');
             exit();
     }
+
+    public static function mail_duplication($email){ 
+        $sql = "SELECT user_id FROM users WHERE email = :email";
+        $stmt = connect()->prepare($sql);
+        $stmt->bindvalue(':email',$email,PDO::PARAM_STR);
+        $stmt->execute();
+        $count=$stmt->fetch(PDO::FETCH_ASSOC);
+        // 重複データの有無をチェック
+        if ($count['user_id']>0) {
+            // 重複するデータがない場合
+        }else{
+            // 重複するデータがある場合
+        }
+    }
 }
 
-?>
+?>　
